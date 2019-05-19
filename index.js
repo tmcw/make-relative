@@ -11,13 +11,15 @@ async function relativize(filepath) {
     fs.readFile(filepath, "utf8", (err, res) => resolve(res))
   );
   const $ = cheerio.load(contents);
-  const url = filepath.replace(/^\./, "");
+  const url = "/" + filepath.replace(/^\./, "");
 
   function relativize(elem, attribute) {
     const val = elem.attr(attribute);
     let u = new URL(val, "https://macwright.org/");
     if (u.host !== "macwright.org") return;
-    elem.attr(attribute, path.relative(url, u.pathname));
+    let relative = path.relative(path.dirname(url), u.pathname);
+    if (path.extname(relative) === "") relative += "/index.html";
+    elem.attr(attribute, relative);
   }
 
   $("a, link").each(function() {
@@ -33,6 +35,8 @@ async function relativize(filepath) {
   });
 
   await new Promise(resolve => fs.writeFile(filepath, $.html(), resolve));
+
+  console.log(`✓ ${filepath}`);
 }
 
 const stream = fg.stream(["**/*.html"]);
