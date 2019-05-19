@@ -24,8 +24,7 @@ async function relativize(filepath) {
     let u = new URL(val, root);
     if (u.host !== new URL(root).host) return;
     let relative = path.relative(path.dirname(url), u.pathname);
-    if (path.extname(relative) === "") relative += "/index.html";
-    elem.attr(attribute, relative);
+    elem.attr(attribute, relative || "./");
   }
 
   $("a, link").each(function() {
