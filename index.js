@@ -6,6 +6,12 @@ const path = require("path");
 const URL = require("url").URL;
 const fs = require("fs");
 
+const root = process.argv[2];
+
+if (!root) {
+  throw new Error("Usage: make-relative https://link-root.com");
+}
+
 async function relativize(filepath) {
   const contents = await new Promise(resolve =>
     fs.readFile(filepath, "utf8", (err, res) => resolve(res))
@@ -15,8 +21,8 @@ async function relativize(filepath) {
 
   function relativize(elem, attribute) {
     const val = elem.attr(attribute);
-    let u = new URL(val, "https://macwright.org/");
-    if (u.host !== "macwright.org") return;
+    let u = new URL(val, root);
+    if (u.host !== new URL(root).host) return;
     let relative = path.relative(path.dirname(url), u.pathname);
     if (path.extname(relative) === "") relative += "/index.html";
     elem.attr(attribute, relative);
