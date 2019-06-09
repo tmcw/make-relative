@@ -15,5 +15,7 @@ files under its current path and rewrite the following references in-place:
 - img src
 
 ```sh
-$ make-relative
+$ make-relative https://expected-domain-name.com
 ```
+
+The domain name is required, because that makes this able to make domain-absolute links relative if they point to the same website.
