@@ -5,6 +5,12 @@ a website, so that one can navigate through the pages when using IPFS. IPFS
 essentially makes websites run in sub-directories, so if you’re using links
 that start with /, then they’ll jump to the wrong place.
 
+Installation:
+
+```
+npm install -g https://github.com/tmcw/make-relative
+```
+
 Usage:
 
 This needs to be run in the root of a built website. It will find all HTML
